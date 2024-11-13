@@ -44,9 +44,10 @@ String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustS
 		
 			
 		try ( Connection con = DriverManager.getConnection(url, uid, pw);
-	          Statement stmt = con.createStatement();) 
+	          Statement stmt = con.createStatement();
+			  Statement st = con.createStatement();) 
 	    {			
-			 ResultSet rst = stmt.executeQuery("SELECT * FROM ordersummary");
+			 ResultSet rst = stmt.executeQuery("SELECT * FROM ordersummary as o join customer as c on c.customerId = o.customerId ");
 			 NumberFormat currFormat = NumberFormat.getCurrencyInstance();
 
 
@@ -57,11 +58,11 @@ String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustS
 				<td> <% out.print(rst.getInt("orderId")); %> </td> 
 				<td> <% out.print(rst.getString("orderDate")); %> </td> 
 				<td style="padding: 15px;"> <% out.print(rst.getInt("customerID")); %> </td> 
-				<td > <% out.print(rst.getInt("orderId")); %> </td> 
-				<td> <% out.print(currFormat.format(rst.getDouble("totalAmount"))); %> </td> <%
+				<td > <% out.print(rst.getString("firstName") + "  " + rst.getString("lastName") ); %> </td> 
+				<td> <% out.print(currFormat.format(rst.getDouble("totalAmount"))); %> </td> </tr> <%
 				
-				ResultSet rst1 = stmt.executeQuery("select * from orderproduct where orderId = " + rst.getInt("orderId")); %>
-			</tr>
+				ResultSet rst1 = st.executeQuery("select * from orderproduct where orderId = " + rst.getInt("orderId")); %>
+			
 			<tr id= "subtable<%= s.intValue() %>" class="collapse">
 			  <td colspan="7">
 				<table class="table subtable">
