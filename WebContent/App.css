@@ -1,0 +1,159 @@
+.App {
+    text-align: center;
+  }
+  
+  .App-logo {
+    height: 40vmin;
+    pointer-events: none;
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+      animation: App-logo-spin infinite 20s linear;
+    }
+  }
+  
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  .App-link {
+    color: #61dafb;
+  }
+  
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .vertical-navigation {
+    width: 250px; /* Adjust as needed */
+    padding-right: 20px;
+  }
+  
+  .vertical-navigation ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  
+  .vertical-navigation .nav-item {
+    margin-bottom: 5px;
+  }
+  
+  .vertical-navigation .level-1 {
+    padding-left: 20px;
+  }
+  
+  .vertical-navigation button,
+  .vertical-navigation a {
+    background: none;
+    border: none;
+    color: #002145; /* UBC blue */
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    padding: 5px 0;
+    font-weight: normal;
+    display: block;
+    text-decoration: none;
+  }
+  
+  .vertical-navigation button.active,
+  .vertical-navigation a.active {
+    font-weight: bold;
+  }
+  
+  .vertical-navigation button:hover,
+  .vertical-navigation a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Main content alignment */
+  .content-wrapper {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding-left: 20px; /* Adjust to align with navigation */
+  }
+  
+  .device-display-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .device-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+  
+  .device-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .device-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .device-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .device-description {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+  
+  .device-parameters {
+    font-size: 0.875rem;
+  }
+  
+  .loading-text {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  @media (max-width: 768px) {
+    .device-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  }

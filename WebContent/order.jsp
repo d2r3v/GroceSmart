@@ -11,6 +11,27 @@
 <title>YOUR NAME Grocery Order Processing</title>
 </head>
 <body>
+	<% 
+	String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustServerCertificate=True";		
+	String uid = "sa";
+	String pw = "304#sa#pw";
+
+	String query = "SELECT * FROM ordersummary as o join customer as c on c.customerId = o.customerId ";
+
+		
+	try ( Connection con = DriverManager.getConnection(url, uid, pw);
+		  Statement stmt = con.createStatement();
+		PreparedStatement ps = con.prepareStatement(query);) 
+	{			
+		 
+
+		ResultSet rs = ps.executeQuery();
+
+	}catch(Exception e){
+		out.println(e);
+	}
+	
+	%>
 
 <% 
 // Get customer id
