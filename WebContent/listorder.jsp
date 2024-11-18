@@ -77,7 +77,7 @@
 			  </tr>
 			</thead>
 			<tbody>
-			  <!-- Row 1 -->
+			  
 
 				<% 
 
@@ -144,7 +144,6 @@ String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustS
 		}		
 
 %>	  
-			  <!-- More Rows can follow in similar format -->
 			</tbody>
 		  </table>
 		</div>

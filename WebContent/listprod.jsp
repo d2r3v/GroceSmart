@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Display</title>
-    <!-- Link to Bootstrap 5 CSS -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-pzjw8f+ua7Kw1TIq0R2F3P6twxoFf13iTxH28m41jxFTJt2kOk/2pwrXo6v1YgDz" crossorigin="anonymous">
     <style>
         .product-card {

@@ -56,7 +56,7 @@
 <h1>Enter your customer id and password to complete the transaction:</h1>
 
 <h2>Login</h2>
-<!-- Form to capture username and password -->
+
 <form method="post" action="checkout.jsp">
     <label for="username">Username: </label>
     <input type="text" id="username" name="username" required>
