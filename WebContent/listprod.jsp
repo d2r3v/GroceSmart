@@ -79,7 +79,8 @@
                     <div class="container">
                         <div class="nav-collapse collapse" id="unit-navigation">
                             <ul class="nav">
-                                <li class="active"><a href="/shop/shop.html">Home</a></li>
+                                <li><a href="/shop/shop.html">Home</a></li>
+                                <li class="active"><a href="/shop/listprod.html">Products</a></li>
                                 <li><a href='/shop/listorder.jsp'>Order List</a></li>
                                 <li><a href="/shop/showcart.jsp">Cart</a></li>
                                         </ul>
