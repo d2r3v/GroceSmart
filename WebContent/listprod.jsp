@@ -175,7 +175,7 @@
                         <div class="card product-card">
                             <img src= <%= s %> alt="<%= rs.getString("productName") %>" class="card-img-top product-image">
                             <div class="card-body">
-                                <h5 class="card-title product-name"><%= rs.getString("productName") %></h5>
+                                <h5 class="card-title product-name"><a href = "product.jsp?Id=<%= id %>"><%= rs.getString("productName") %></a></h5>
                                 <p class="product-category"><%= rs.getString("categoryName") %></p>
                                 <p class="card-text"><%= rs.getString("productDesc") %></p>
                                 <p class="product-price"><%= currencyFormat.format(rs.getDouble("productPrice")) %></p>

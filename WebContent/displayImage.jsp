@@ -20,13 +20,19 @@ catch(Exception e)
 
 String sql = "SELECT productImage FROM Product P  WHERE productId = ?";
 
-try 
-{
-	getConnection();
 
-	PreparedStatement stmt = con.prepareStatement(sql);
-	stmt.setInt(1,idVal);
-	ResultSet rst = stmt.executeQuery();		
+String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustServerCertificate=True";		
+String uid = "sa";
+String pw = "304#sa#pw";
+
+	try ( Connection con = DriverManager.getConnection(url, uid, pw);
+		PreparedStatement ps = con.prepareStatement(sql);
+		Statement stmt = con.createStatement();
+		) {
+
+		ps.setInt(1,idVal);
+		ResultSet rst = ps.executeQuery();	
+		
 
 	int BUFFER_SIZE = 10000;
 	byte[] data = new byte[BUFFER_SIZE];
@@ -47,9 +53,5 @@ try
 } 
 catch (SQLException ex) {
 	out.println(ex);
-}
-finally
-{
-	closeConnection();
 }
 %>

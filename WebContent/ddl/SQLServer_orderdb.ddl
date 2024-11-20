@@ -30,6 +30,7 @@ CREATE TABLE customer (
     country             VARCHAR(40),
     userid              VARCHAR(20),
     password            VARCHAR(30),
+    isAdmin             BIT DEFAULT 0,
     PRIMARY KEY (customerId)
 );
 
