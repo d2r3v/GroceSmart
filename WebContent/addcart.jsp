@@ -1,5 +1,12 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.ArrayList" %>
+<!DOCTYPE html>
+<html>
+<head>
+<title> Order List</title>
+</head>
+<body>
+	<%@ include file="header.jsp" %>
 <%
 // Get the current list of products
 @SuppressWarnings({"unchecked"})
@@ -35,4 +42,7 @@ else
 
 session.setAttribute("productList", productList);
 %>
+
 <jsp:forward page="showcart.jsp" />
+</body>
+</html>
