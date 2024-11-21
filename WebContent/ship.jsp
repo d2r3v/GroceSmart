@@ -21,11 +21,13 @@
 	String uid = "sa";
 	String pw = "304#sa#pw";
 	String n = request.getParameter("orderId");
+	String Warehouse = "";
+	boolean sc = true;
 
 	String query = "SELECT * FROM orderproduct where orderId = ?";
 	String q2 = "Select * from productinventory where quantity > ? and productId = ? ";
 	String q1 = "Update productinventory set quantity = ? where productId = ? and warehouseId = ?";
-	String s = "INSERT INTO Shipment (shipmentId, shipmentDate,warehouseId) VALUES (?,?,?);";
+	String s = "INSERT INTO Shipment (shipmentDate,warehouseId) VALUES (CURRENT_TIMESTAMP,?);";
 
 		try ( Connection con = DriverManager.getConnection(url, uid, pw);
 			PreparedStatement ps = con.prepareStatement(query);
@@ -36,9 +38,11 @@
 						Statement stmt = con.createStatement();
 			) {
 
+				con.setAutoCommit(false);
+
+
 				ps.setString(1,n);
 				ResultSet rs = ps.executeQuery();
-				out.println("true");
 
 				if(!rs.next()){
 					%> <h2>No Such Order!</h2> <%
@@ -48,25 +52,52 @@
 						ResultSet rs1 = ps3.executeQuery();
 						if(!rs1.next()){
 							%> <h3>Shipment Not Done! Insufficient Inventory for Product ID - <%= rs.getString("productId") %></h3> <%
+							sc = false;
 							return;
 						} else {
-							%> <h4>Ordered Product : <% rs.getString("producId"); %> Previous Inventory - <% rs1.getString("quantity"); %> New Inventory - <% out.println(rs1.getInt("quantity") - rs.getInt("quantity")); %> </h4> <%
+							%> <h4>Ordered Product : <%= rs.getString("productId") %> Previous Inventory - <%= rs1.getString("quantity") %> New Inventory - <% out.println(rs1.getInt("quantity") - rs.getInt("quantity")); %> </h4> <%
+							Warehouse = rs1.getString("warehouseId");
+							ps1.setInt(1,(rs1.getInt("quantity") - rs.getInt("quantity")));
+							ps1.setString(2,rs.getString("productId"));
+							ps1.setString(3,Warehouse);
+							ps1.executeUpdate();
+
 						}
 					while(rs.next()){
 						ps3.setString(2,rs.getString("productId"));
 						ps3.setInt(1,rs.getInt("quantity"));
 						ResultSet rs2 = ps3.executeQuery();
-						if(!rs1.next()){
+						if(!rs2.next()){
 							%> <h3>Shipment Not Done! Insufficient Inventory for Product ID - <%= rs.getString("productId") %></h3> <%
+							sc = false;
 							return;
 						} else {
-							%> <h4>Ordered Product : <% rs.getString("producId"); %> Previous Inventory - <% rs1.getString("quantity"); %> New Inventory - <% out.println(rs1.getInt("quantity") - rs.getInt("quantity")); %> </h4> <%
+							%> <h4>Ordered Product : <%= rs.getString("productId") %> Previous Inventory - <%= rs2.getString("quantity") %> New Inventory - <% out.println(rs2.getInt("quantity") - rs.getInt("quantity")); %> </h4> <%
+							ps1.setInt(1,(rs2.getInt("quantity") - rs.getInt("quantity")));
+							ps1.setString(2,rs.getString("productId"));
+							ps1.setString(3,Warehouse);
+							ps1.executeUpdate();
 						}
+					}
+
+					if(sc){
+						%> <h2> Shipment Processed Successfully! </h2> <%
+						ps2.setString(1,Warehouse);
+						ps2.executeUpdate();
+						con.commit();
+						con.setAutoCommit(true);
+
+					} else {
+						con.rollback();
+						con.setAutoCommit(true);
 					}
 				}
 			} catch (Exception ex){
 				out.println(ex);
-			} %>
+			}
+			
+			
+			%>
 
 <%
 	// TODO: Get order id
@@ -83,7 +114,7 @@
 	// TODO: Auto-commit should be turned back on
 %>                       				
 
-<h2><a href="shop/index.jsp">Back to Main Page</a></h2>
+<h2><a href="index.jsp">Back to Main Page</a></h2>
 
 </body>
 </html>

@@ -84,7 +84,6 @@
 </head>
 <body>
  
-<%@ include file="header.jsp" %>
 
 <% String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustServerCertificate=True";		
 		String uid = "sa";
