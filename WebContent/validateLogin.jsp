@@ -21,17 +21,17 @@
 <%!
 	String validateLogin(JspWriter out,HttpServletRequest request, HttpSession session) throws IOException
 	{
-		boolean r = true;
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String retStr = null;
+
 
 		if(username == null || password == null)
 				return null;
 		if((username.length() == 0) || (password.length() == 0))
 				return null;
 
-				String query = "Select * from customer where username = ? and password = ?";
+				String query = "Select * from customer where userid = ? and password = ?";
 
     
 				try ( Connection con = DriverManager.getConnection(url, uid, pw);
@@ -43,14 +43,13 @@
 					ps.setString(2,password);
 				
 					ResultSet rs = ps.executeQuery();
-					r = rs.next();
 					
 					if(rs.next()){
 						retStr = rs.getString("firstName");
 					}
 		
 		} 
-		catch (SQLException ex) {
+		catch (Exception ex) {
 			out.println(ex);
 		}
 		finally
@@ -61,9 +60,7 @@
 		if(retStr != null)
 		{	session.removeAttribute("loginMessage");
 			session.setAttribute("authenticatedUser",username);
-		} else if (r){
-			session.setAttribute("loginMessage",username + " " + password);
-		}
+		} 
 		else
 			session.setAttribute("loginMessage","Could not connect to the system using that username/password.");
 
