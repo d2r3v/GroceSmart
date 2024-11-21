@@ -2,7 +2,15 @@
 <html>
 <head>
 <title>Administrator Page</title>
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3cEf5zq1p9s+p12k+kk726zsYGk0u41GWzUqLJM9MQyTqKGHxlIUAXnQv4n1v2hRZg4" crossorigin="anonymous">
+	<style>
+		.subtable td, .subtable th {
+		  padding: 8px;
+		  border: 1px solid #ddd;
+		}
+	  </style>
+<title> Grocery Order List</title>
+<head>
 <body>
 
 <%
@@ -54,9 +62,8 @@ String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustS
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Product Id</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
+                                    <th>Order Date</th>
+                                    <th>Total Order Amount</th>
                                 </tr>
                             </thead>
                             <tbody> 
@@ -80,12 +87,6 @@ String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustS
                     out.println(e);
                 }%> </tbody> </table> </div> <%
             }
-
-
-
-
-// TODO: Write SQL query that prints out total order amount by day
-String sql = "";
 
 %>
 

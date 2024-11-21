@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Login Screen</title>
+<%@ include file="header.jsp" %>
 </head>
 <body>
 
