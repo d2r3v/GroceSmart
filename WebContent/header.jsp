@@ -20,7 +20,7 @@
 					  </a>
 				  </div>
 				  <div id="unit-name">
-					  <a href="/shop/shop.html"><span id="unit-faculty">Your Supermart</span><span id="unit-identifier"></span></a>
+					  <a href="/shop/index.jsp"><span id="unit-faculty">Your Supermart</span><span id="unit-identifier"></span></a>
 				  </div>
 			  </div>
 		</div>

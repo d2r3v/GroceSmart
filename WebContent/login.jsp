@@ -3,6 +3,21 @@
 <head>
 <title>Login Screen</title>
 <%@ include file="header.jsp" %>
+<style>
+	.subtable td, .subtable th {
+	  padding: 8px;
+	  border: 1px solid #ddd;
+	}
+	.buy-btn {
+		display: inline-block;
+		padding: 10px 20px;
+		background: #007bff;
+		color: white;
+		text-decoration: none;
+		border-radius: 5px;
+		margin-top: 10px;
+	}
+  </style>
 </head>
 <body>
 
@@ -29,7 +44,7 @@ if (session.getAttribute("loginMessage") != null)
 </tr>
 </table>
 <br/>
-<input class="submit" type="submit" name="Submit2" value="Log In">
+<input class="buy-btn" type="submit" name="Submit2" value="Log In">
 </form>
 
 </div>

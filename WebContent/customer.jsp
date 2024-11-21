@@ -73,16 +73,8 @@
 				}
 				catch(Exception e){
 					out.println(e);
-				}%> </tbody> </table> </div> <%
-%>
+				}%> </tbody> </table> </div> 
 
-<%
-
-// TODO: Print Customer information
-String sql = "";
-
-// Make sure to close connection
-%>
 
 </body>
 </html>

@@ -8,6 +8,15 @@
 		  padding: 8px;
 		  border: 1px solid #ddd;
 		}
+        .buy-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
 	  </style>
 <title> Grocery Order List</title>
 <head>
@@ -47,8 +56,10 @@ String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustS
 
                 if (!Authenticated){
                     String loginMessage = "You do not have admin privelages to access the URL "+request.getRequestURL().toString();
-                    session.setAttribute("loginMessage",loginMessage);        
-                    %> <c:redirect url="/login.jsp"/> <%
+                    session.setAttribute("loginMessage",loginMessage);      
+                  %>  <h2> You do not have Admin Access.</h2>
+                  <a href="/shop/login.jsp" class="buy-btn">Go to Login Page</a>
+                  <%
                 } else {
                     String q = "SELECT CONVERT(DATE, orderDate) AS OrderDay, SUM(totalAmount) AS TotalSales FROM ordersummary GROUP BY CONVERT(DATE, orderDate) ORDER BY OrderDay;";
                     try ( Connection con = DriverManager.getConnection(url, uid, pw);
