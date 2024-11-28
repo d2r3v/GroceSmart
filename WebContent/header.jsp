@@ -72,6 +72,7 @@
                             <li><a href="/shop/createUser.jsp">Create User</a></li>
                         <% } %>
 						<li><a href="/shop/editUser.jsp">Edit User</a></li>
+						<li><a href="/shop/Orders.jsp">Orders</a></li>
                     </ul>
                     <h3 style="text-align: end; color: white;">
                         <% 
