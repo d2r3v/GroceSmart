@@ -107,5 +107,6 @@
 %>
 <h2><a href="createUser.jsp">Create Another User</a></h2>
 <h2><a href="admin.jsp">Back to Admin Dashboard</a></h2>
+<%@ include file="Footer.jsp" %>
 </body>
 </html>

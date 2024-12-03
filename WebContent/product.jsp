@@ -2,7 +2,7 @@
 <%@ page import="java.text.NumberFormat" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <%@ include file="jdbc.jsp" %>
-
+<%@ page import="java.text.SimpleDateFormat" %>
 <html>
 <head>
 <title>Your Grocery - Product Information</title>
@@ -83,69 +83,141 @@
     </style>
 </head>
 <body>
- 
+    <%
+    String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustServerCertificate=True";		
+    String uid = "sa";
+    String pw = "304#sa#pw";
 
-<% String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustServerCertificate=True";		
-		String uid = "sa";
-		String pw = "304#sa#pw";
+    String productQuery = "SELECT * FROM product WHERE productId = ?";
+    String reviewQuery = "SELECT r.reviewRating, r.reviewDate, r.reviewComment, c.firstName, c.lastName " +
+                         "FROM review AS r " +
+                         "JOIN customer AS c ON r.customerId = c.customerId " +
+                         "WHERE r.productId = ?";
+    String userReviewQuery = "SELECT reviewId FROM review WHERE productId = ? AND customerId = ?";
+    String authenticatedUser = (String) session.getAttribute("authenticatedUser");
 
-        String query = "SELECT * FROM product where productId = ?";
+    String productId = request.getParameter("Id");
+    boolean hasReviewed = false;
+    int customerId = -1;
 
-            try ( Connection con = DriverManager.getConnection(url, uid, pw);
-                PreparedStatement ps = con.prepareStatement(query);
-                
-                Statement stmt = con.createStatement();
-                ) {
+    // Check if user is logged in
+    if (authenticatedUser != null) {
+        String userIdQuery = "SELECT customerId FROM customer WHERE userid = ?";
+        try (Connection con = DriverManager.getConnection(url, uid, pw);
+             PreparedStatement ps = con.prepareStatement(userIdQuery)) {
+            ps.setString(1, authenticatedUser);
+            ResultSet userRs = ps.executeQuery();
+            if (userRs.next()) {
+                customerId = userRs.getInt("customerId");
+            }
+        }
+    }
 
-                    String n = request.getParameter("Id");
+    try (Connection con = DriverManager.getConnection(url, uid, pw);
+         PreparedStatement productPs = con.prepareStatement(productQuery);
+         PreparedStatement reviewPs = con.prepareStatement(reviewQuery);
+         PreparedStatement userReviewPs = con.prepareStatement(userReviewQuery)) {
 
-                    ps.setString(1,n);
-                    ResultSet rs = ps.executeQuery();
+        // Fetch product details
+        productPs.setString(1, productId);
+        ResultSet productRs = productPs.executeQuery();
 
-                    if (rs.next()) {
-                        String productName = rs.getString("productName");
-                        String productPrice = rs.getString("productPrice");
-                        String productImageURL = rs.getString("productImageURL");
-                        String productDesc = rs.getString("productDesc");
-                        
-            %>
+        if (productRs.next()) {
+            String productName = productRs.getString("productName");
+            String productPrice = productRs.getString("productPrice");
+            String productImageURL = productRs.getString("productImageURL");
+            String productDesc = productRs.getString("productDesc");
+
+            // Check if the user has already reviewed this product
+            if (customerId != -1) {
+                userReviewPs.setString(1, productId);
+                userReviewPs.setInt(2, customerId);
+                ResultSet userReviewRs = userReviewPs.executeQuery();
+                hasReviewed = userReviewRs.next();
+            }
+%>
             <div class="container">
                 <div class="product-header">
                     <h1><%= productName %></h1>
                 </div>
                 <div class="product-details">
                     <div class="product-image">
-                        <img src="<%= productImageURL %>" alt="<%= productName %>"> <% if (rs.getString("productImage") != null){
-                            %>
-                        <img src="displayImage.jsp?id=<%= n %>" alt="<%= productName %>">
+                        <img src="<%= productImageURL %>" alt="<%= productName %>">
+                        <% if (productRs.getString("productImage") != null) { %>
+                        <img src="displayImage.jsp?id=<%= productId %>" alt="<%= productName %>">
                         <% } %>
                     </div>
                     <div class="product-info">
                         <h2>Description</h2>
                         <p><%= productDesc %></p>
                         <div class="product-price">$<%= productPrice %></div>
-                        <a href="/shop/addcart.jsp?id=<%= n %>&name=<%= productName %>&price=<%= productPrice %>" class="buy-btn">Buy Now</a>
+                        <a href="/shop/addcart.jsp?id=<%= productId %>&name=<%= productName %>&price=<%= productPrice %>" class="buy-btn">Buy Now</a>
                         <a href="/shop/listprod.jsp" class="buy-btn">Continue Shopping</a>
-
                     </div>
                 </div>
-            </div>
-<% 
-}
-}catch (Exception e){
-    out.println(e);
-}
-%>
 
+                <div class="review-section">
+                    <h2>Reviews</h2>
 <%
-
-// TODO: If there is a productImageURL, display using IMG tag
-		
-// TODO: Retrieve any image stored directly in database. Note: Call displayImage.jsp with product id as parameter.
-		
-// TODO: Add links to Add to Cart and Continue Shopping
+                    // Fetch and display reviews
+                    reviewPs.setString(1, productId);
+                    ResultSet reviewRs = reviewPs.executeQuery();
+                    if (!reviewRs.isBeforeFirst()) {
 %>
+                        <p>No reviews yet for this product.</p>
+<%
+                    } else {
+                        while (reviewRs.next()) {
+                            int rating = reviewRs.getInt("reviewRating");
+                            String reviewDate = new SimpleDateFormat("MMM dd, yyyy").format(reviewRs.getDate("reviewDate"));
+                            String reviewComment = reviewRs.getString("reviewComment");
+                            String reviewerName = reviewRs.getString("firstName") + " " + reviewRs.getString("lastName");
+%>
+                            <div class="review">
+                                <p><strong><%= reviewerName %></strong> - <%= reviewDate %></p>
+                                <p>Rating: <%= rating %> / 5</p>
+                                <p><%= reviewComment %></p>
+                            </div>
+<%
+                        }
+                    }
 
+                    // If the user is logged in and hasn't reviewed this product, display the review form
+                    if (authenticatedUser != null && !hasReviewed) {
+%>
+                    <h3>Write a Review</h3>
+                    <form action="/shop/addReview.jsp" method="POST">
+                        <input type="hidden" name="productId" value="<%= productId %>">
+                        <label for="rating">Rating (1-5):</label>
+                        <input type="number" id="rating" name="rating" min="1" max="5" required>
+                        <br>
+                        <label for="comment">Comment:</label>
+                        <textarea id="comment" name="comment" rows="4" required></textarea>
+                        <br>
+                        <button type="submit" class="buy-btn">Submit Review</button>
+                    </form>
+<%
+                    } else if (authenticatedUser == null) {
+%>
+                    <p><a href="/shop/login.jsp">Log in</a> to write a review.</p>
+<%
+                    } else if (hasReviewed) {
+%>
+                    <p>You have already reviewed this product.</p>
+<%
+                    }
+%>
+                </div>
+            </div>
+<%
+        } else {
+%>
+        <h1>Product not found.</h1>
+<%
+        }
+    } catch (Exception e) {
+        out.println("<p style='color:red;'>Error: " + e.getMessage() + "</p>");
+    }
+%>
 </body>
 </html>
-

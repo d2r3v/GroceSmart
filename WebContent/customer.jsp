@@ -75,6 +75,7 @@
 					out.println(e);
 				}%> </tbody> </table> </div> 
 
+				<%@ include file="Footer.jsp" %>
 
 </body>
 </html>

@@ -148,6 +148,7 @@ if (productList == null){ %>
 
 // Clear cart if order placed successfully
 %>
+<%@ include file="Footer.jsp" %>
 </BODY>
 </HTML>
 

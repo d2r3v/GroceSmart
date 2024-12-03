@@ -134,7 +134,7 @@ catch (java.lang.ClassNotFoundException e)
 
 // Close connection
 %>
-
+<%@ include file="Footer.jsp" %>
 </body>
 </html>
 

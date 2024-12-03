@@ -66,5 +66,6 @@ catch (Exception e)
     out.print(e);
 }  
 %>
+<%@ include file="Footer.jsp" %>
 </body>
 </html> 

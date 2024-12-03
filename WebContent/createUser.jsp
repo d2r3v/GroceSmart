@@ -99,5 +99,6 @@
 </form>
 
 <h2><a href="admin.jsp">Back to Admin Dashboard</a></h2>
+<%@ include file="Footer.jsp" %>
 </body>
 </html>

@@ -7,7 +7,7 @@
     String pw1 = "304#sa#pw";
 
     // Check if the user is authenticated and is an admin
-    boolean isAdmin = false;
+    boolean isAdmin1 = false;
     String authenticatedUser1 = (String) session.getAttribute("authenticatedUser");
 
     if (authenticatedUser1 != null) {
@@ -20,7 +20,7 @@
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                isAdmin = rs.getBoolean("isAdmin");
+                isAdmin1 = rs.getBoolean("isAdmin");
             }
         } catch (Exception e) {
             out.println("<p style='color:red;'>Error: " + e.getMessage() + "</p>");
@@ -67,9 +67,11 @@
                         <li><a href="/shop/listprod.jsp">Products</a></li>
                         <li><a href="/shop/listorder.jsp">Order List</a></li>
                         <li><a href="/shop/showcart.jsp">Cart</a></li>						
-                        <% if (isAdmin) { %>
+                        <% if (isAdmin1) { %>
                             <li><a href="/shop/admin.jsp">Admin Dashboard</a></li>
                             <li><a href="/shop/createUser.jsp">Create User</a></li>
+                            <li><a href="/shop/listCustomer.jsp">All Customers</a></li>
+
                         <% } %>
 						<li><a href="/shop/editUser.jsp">Edit User</a></li>
 						<li><a href="/shop/Orders.jsp">Orders</a></li>

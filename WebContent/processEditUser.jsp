@@ -88,5 +88,6 @@
 %>
 
 <h2><a href="/shop/index.jsp">Go to Homepage</a></h2>
+<%@ include file="Footer.jsp" %>
 </body>
 </html>

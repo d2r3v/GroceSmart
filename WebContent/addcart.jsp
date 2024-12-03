@@ -44,5 +44,6 @@ session.setAttribute("productList", productList);
 %>
 
 <jsp:forward page="showcart.jsp" />
+<%@ include file="Footer.jsp" %>
 </body>
 </html>

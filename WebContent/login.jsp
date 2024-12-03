@@ -48,7 +48,7 @@ if (session.getAttribute("loginMessage") != null)
 </form>
 
 </div>
-
+<%@ include file="Footer.jsp" %>
 </body>
 </html>
 

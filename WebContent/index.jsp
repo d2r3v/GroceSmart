@@ -34,6 +34,8 @@
 
 <h4 align="center"><a href="ship.jsp?orderId=3">Test Ship orderId=3</a></h4>
 
+<%@ include file="Footer.jsp" %>
+
 </body>
 </head>
 

@@ -92,5 +92,6 @@
 </form>
 
 <h2><a href="/shop/index.jsp">Cancel</a></h2>
+<%@ include file="Footer.jsp" %>
 </body>
 </html>

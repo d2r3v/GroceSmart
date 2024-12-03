@@ -115,6 +115,6 @@
 %>                       				
 
 <h2><a href="index.jsp">Back to Main Page</a></h2>
-
+<%@ include file="Footer.jsp" %>
 </body>
 </html>

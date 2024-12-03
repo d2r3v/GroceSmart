@@ -100,7 +100,7 @@ String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustS
             }
 
 %>
-
+<%@ include file="Footer.jsp" %>
 </body>
 </html>
 

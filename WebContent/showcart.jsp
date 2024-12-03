@@ -77,5 +77,6 @@ if (productList == null || productList.isEmpty()) {
 
 out.println("<h2><a href='listprod.jsp'>Continue Shopping</a></h2>");
 %>
+<%@ include file="Footer.jsp" %>
 </body>
 </html>
