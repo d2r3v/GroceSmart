@@ -2,67 +2,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Ray's Grocery CheckOut Line</title>
-<head>
+    <title>Ray's Grocery CheckOut Line</title>
     <%@ include file="header.jsp" %>
+</head>
 <body>
+    <h1>Enter your customer ID and password to complete the transaction:</h1>
+    <h2>Login</h2>
 
-<h1>Enter your customer id and password to complete the transaction:</h1>
+    <!-- Login Form -->
+    <form method="post" action="checkout.jsp">
+        <label for="username">Username: </label>
+        <input type="text" id="username" name="username" required>
+        <br><br>
+        <label for="password">Password: </label>
+        <input type="password" id="password" name="password" required>
+        <br><br>
+        <input type="submit" value="Submit">
+        <input type="reset" value="Reset">
+    </form>
 
-<h2>Login</h2>
+    <% 
+    // Ensure processing happens only after form submission
+    String username = request.getParameter("username");
+    String password = request.getParameter("password");
 
-<form method="post" action="checkout.jsp">
-    <label for="username">Username: </label>
-    <input type="text" id="username" name="username" required>
-    <br><br>
-    <label for="password">Password: </label>
-    <input type="password" id="password" name="password" required>
-    <br><br>
-    <input type="submit" value="Submit">
-    <input type="reset" value="Reset">
-</form>
+    if (username != null && password != null) {
+        try {
+            // Load the JDBC driver
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
-<%
+            // Database connection details
+            String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustServerCertificate=True";
+            String uid = "sa";
+            String pw = "304#sa#pw";
 
-try
-{	// Load driver class
-	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-}
-catch (java.lang.ClassNotFoundException e)
-{
-	out.println("ClassNotFoundException: " +e);
-}
+            // SQL query to validate login
+            String query = "SELECT * FROM customer WHERE userId = ? AND password = ?";
 
-String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustServerCertificate=True";		
-String uid = "sa";
-String pw = "304#sa#pw";
+            // Open database connection and execute query
+            try (Connection con = DriverManager.getConnection(url, uid, pw);
+                 PreparedStatement ps = con.prepareStatement(query)) {
 
-String query = "Select * from customer where customerId = ? and password = ?";
+                // Set query parameters to prevent SQL injection
+                ps.setString(1, username);
+                ps.setString(2, password);
 
-    
-try ( Connection con = DriverManager.getConnection(url, uid, pw);
-      Statement stmt = con.createStatement();
-    PreparedStatement ps = con.prepareStatement(query);
-   ) 
-{			
-    ps.setString(1,request.getParameter("username"));
-    ps.setString(2,request.getParameter("password"));
+                // Execute the query
+                ResultSet rs = ps.executeQuery();
 
-    ResultSet rs = ps.executeQuery();
-
-    if(!rs.next()){
-        %> <h4 style="color: red;"> Incorrect Username or Password.</h4> <%
-    } else {
-        response.sendRedirect("order.jsp?customerId=" + request.getParameter("username"));
+                if (rs.next()) {
+                    // Successful login, redirect to order page
+                    response.sendRedirect("order.jsp?customerId=" + rs.getString("customerId"));
+                } else {
+                    // Invalid credentials
+                    %> 
+                    <h4 style="color: red;">Incorrect Username or Password.</h4>
+                    <%
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            // Handle missing driver class
+            out.println("<h4 style='color: red;'>Error: Unable to load database driver. Please contact support.</h4>");
+        } catch (SQLException e) {
+            // Handle database errors
+            out.println("<h4 style='color: red;'>Error: " + e.getMessage() + "</h4>");
+        }
     }
+    %>
 
-
-}
-catch(Exception e){
-    out.println(e);
-}
-%>
-
-<%@ include file="Footer.jsp" %>
+    <%@ include file="Footer.jsp" %>
 </body>
 </html>
