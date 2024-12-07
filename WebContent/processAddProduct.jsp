@@ -1,13 +1,13 @@
 <%@ page import="java.sql.*" %>
 <%
-String url = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustServerCertificate=True";        
-String uid = "sa";
-String pw = "304#sa#pw";
+String url1 = "jdbc:sqlserver://cosc304_sqlserver:1433;databaseName=orders;TrustServerCertificate=True";        
+String uid1 = "sa";
+String pw1 = "304#sa#pw";
 boolean Authenticated = false;
 
 String query = "SELECT * FROM customer WHERE userid = ? AND isAdmin = 1";
 
-try (Connection con = DriverManager.getConnection(url, uid, pw);
+try (Connection con = DriverManager.getConnection(url1, uid1, pw1);
      PreparedStatement ps = con.prepareStatement(query)) {
 
     ps.setString(1, (String) session.getAttribute("authenticatedUser"));
